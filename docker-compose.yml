@@ -5,21 +5,26 @@ services:
     image: loraserver/loraserver:2
     volumes:
       - ./configuration/loraserver:/etc/loraserver
-
+    depends_on:
+      - postgresql
+      - mosquitto
   appserver:
     image: loraserver/lora-app-server:2
     ports:
       - 8080:8080
     volumes:
       - ./configuration/lora-app-server:/etc/lora-app-server
-
+    depends_on:
+      - postgresql
+      - redis
   gatewaybridge:
     image: loraserver/lora-gateway-bridge:2
     ports:
       - 1700:1700/udp
     volumes:
       - ./configuration/lora-gateway-bridge:/etc/lora-gateway-bridge
-  
+    depends_on:
+      - mosquitto
   geoserver:
     image: loraserver/lora-geo-server:2
     volumes:
